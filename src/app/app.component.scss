@@ -1,0 +1,48 @@
+.mainbox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+mgl-map {
+    position: absolute;
+    top: 120px;
+    width: 95%;
+    height: 80%;
+}
+
+.marker-country {
+    height: 40px;
+    width: 40px;
+    background-color: green;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .marker-value {
+        color: white;
+    }
+}
+
+.marker-port {
+    height: 30px;
+    width: 30px;
+    background-color: green;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .marker-value {
+        color: white;
+    }
+}
+
+.display-port {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background-color: white;
+    width: 200px;
+    height: 100px;
+}
