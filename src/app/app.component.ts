@@ -76,30 +76,12 @@ export class AppComponent {
       value: 2,
       info: false,
     },
-    // {
-    //     countryname: "China",
-    //     countrycode: "CN",
-    //     portcode: "CNCEK",
-    //     portname: "CNCEK",
-    //     latitude: 42.466666670,
-    //     longitude: 101.150000000,
-    //     value: 10,
-    //     info: false
-    // },
-    // {
-    //     countryname: "China",
-    //     countrycode: "CN",
-    //     portcode: "CNDMY",
-    //     portname: "CNDMY",
-    //     latitude: 25.183333330,
-    //     longitude: 119.600000000,
-    //     value: 8,
-    //     info: false
-    // }
   ];
   geometry!: GeoJSONSourceRaw;
 
-  constructor() {}
+  constructor() {
+
+  }
 
   changeCountry(data: string) {
     if (data === 'TH') {
@@ -119,21 +101,14 @@ export class AppComponent {
   onLoad(mapInstance: Map) {
     mapInstance.resize();
     this.mapbox = mapInstance;
-    // new Marker({
-    //     color: "#FF4122",
-    //     offset: [0, 1]
-    // })
-    //     .setLngLat([this.accountProfile.longtitude, this.accountProfile.latitude])
-    //     .addTo(mapInstance);
-    // mapInstance.setCenter([this.accountProfile.longtitude, this.accountProfile.latitude]);
   }
 
   onZoom() {
     this.curZoom = this.mapbox.getZoom();
-    if (this.curZoom <= 3 && this.mapbox.getLayer('route')) {
-      this.mapbox.removeLayer('route');
-      this.mapbox.removeSource('route');
-    }
+    // if (this.curZoom <= 3 && this.mapbox.getLayer('route')) {
+    //   this.mapbox.removeLayer('route');
+    //   this.mapbox.removeSource('route');
+    // }
   }
 
   alert(data: string) {
@@ -143,90 +118,128 @@ export class AppComponent {
   createLine(index: number) {
     const line = generateLine(
       { latitude: 13.08333333, longitude: 100.51666667 },
-      { latitude: 44.5, longitude: -89.5 }
+      { latitude: 5.644453350470325, longitude: -0.15092017480154407 }
+      // { latitude: 19.663799228607935, longitude: -155.99011187344598 }
     );
+
+    // const start = [100.51666667, 13.08333333];
+    // const end = [-0.15092017480154407, 5.644453350470325];
+    // const distance = turf.distance(start, end);
+    // const bearing = turf.rhumbBearing(start, end);
+    // const points = [];
+
+    // for (let i = 0; i <= distance; i += 100) {
+    //   const point = turf.rhumbDestination(start, i, bearing, {
+    //     units: 'kilometers',
+    //   });
+    //   points.push(point.geometry.coordinates);
+    // }
+
+    // const line = turf.lineString(points);
 
     this.geometry = {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'LineString',
-              coordinates: line.geometry.coordinates,
-            },
-          },
-        ],
+        features: line,
       },
     };
 
-    if (!this.mapbox.getLayer('route')) {
-      this.mapbox.addLayer({
-        id: 'route',
-        type: 'line',
-        source: this.geometry,
+    console.log('final geojson => ', this.geometry);
+
+    // if (!this.mapbox.getLayer('route')) {
+      // this.mapbox.addLayer({
+      //   id: 'route',
+      //   type: 'line',
+      //   source: this.geometry,
+      //   layout: {
+      //     'line-join': 'round',
+      //     'line-cap': 'round',
+      //   },
+      //   paint: {
+      //     'line-color': '#f59e0b',
+      //     'line-width': 2,
+      //   },
+      // });
+
+    // }
+
+    // if (this.mapPortData[index]) {
+    //   this.mapPortData[index].info = !this.mapPortData[index].info;
+    // }
+
+
+
+
+    // const middleValues = {
+    //   1: line.geometry.coordinates[
+    //     Math.floor(line.geometry.coordinates.length / 2) - 1
+    //   ],
+    //   2: line.geometry.coordinates[
+    //     Math.floor(line.geometry.coordinates.length / 2)
+    //   ],
+    // };
+
+    // normal : greatCircle, bearing
+    // 3D : rhumbDestination, rhumbBearing
+
+    // var bearing = turf.bearing(middleValues[1], middleValues[2]);
+    // var rhumbBearing = turf.rhumbBearing(middleValues[1], middleValues[2]);
+
+    // console.log('middleValues of this line --> ', middleValues);
+    // console.log('bearing --> ', bearing);
+    // console.log('rhumbBearing --> ', rhumbBearing);
+
+    const addNew = [{
+      id: '#gen or index', // icon-index-i
+      type: 'symbol',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: [108.96594492878643, 18.761361033976222],
+              },
+            },
+          ],
+        },
         layout: {
-          'line-join': 'round',
-          'line-cap': 'round',
+          'icon-image': 'icon-route',
+          'icon-size': 0.05,
+          'icon-rotate': 55.01909022500917,
         },
-        paint: {
-          'line-color': '#f59e0b',
-          'line-width': 2,
-        },
-      });
-    }
+      },
+    }];
 
-    if (this.mapPortData[index]) {
-      this.mapPortData[index].info = !this.mapPortData[index].info;
-    }
-
-    const middleValues = {
-      1: line.geometry.coordinates[
-        Math.floor(line.geometry.coordinates.length / 2) - 1
-      ],
-      2: line.geometry.coordinates[
-        Math.floor(line.geometry.coordinates.length / 2)
-      ],
-    };
-
-    var bearing = turf.bearing(middleValues[1], middleValues[2]);
-    var rhumbBearing = turf.rhumbBearing(middleValues[1], middleValues[2]);
-
-    console.log('middleValues of this line --> ', middleValues);
-    console.log('bearing --> ', bearing);
-    console.log('rhumbBearing --> ', rhumbBearing);
   }
 }
 
 const generateLine = (
   startPoint: Point,
-  endPoint: Point,
-  segments: number = 20
-): turf.Feature<turf.LineString> => {
+  endPoint: Point
+): turf.Feature<turf.LineString, any>[] => {
   const startCoord = [startPoint.longitude, startPoint.latitude];
   const endCoord = [endPoint.longitude, endPoint.latitude];
+  const greatCircle = turf.greatCircle(startCoord, endCoord);
 
-  const feature: turf.Feature<turf.LineString> = {
-    type: 'Feature',
-    geometry: {
-      type: 'LineString',
-      coordinates: [startCoord, endCoord],
-    },
-    properties: {},
-  };
+  // If great circle crosses antimeridian, wrap the coordinates
+  const wrappedCoords = greatCircle.geometry.coordinates.map((coord: any) => {
+    const lon = coord[0];
+    if (lon < -180 || lon > 180) {
+      coord[0] = lon > 0 ? lon - 360 : lon + 360;
+    }
+    return coord;
+  });
 
-  const lineDistance = turf.length(feature);
-  const arc: Array<Array<number>> = [];
-  for (let i = 0; i < lineDistance; i += lineDistance / segments) {
-    const segment = turf.along(feature, i);
-    arc.push(segment.geometry.coordinates);
-  }
-  arc.push(endCoord);
-  feature.geometry.coordinates = arc;
-  return feature;
+  const line: turf.Feature<turf.LineString, any>[] = [
+    turf.lineString(wrappedCoords),
+  ];
+  return line;
 };
 
 interface Point {

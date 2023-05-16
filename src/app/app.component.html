@@ -37,5 +37,9 @@
         </mgl-marker>
       </ng-container>
     </ng-template>
+    <mgl-layer *ngIf="geometry" id="state-borders" type="line" [source]="geometry" [paint]="{
+      'line-color': '#627BC1',
+      'line-width': 2
+    }"></mgl-layer>
   </mgl-map>
 </div>
